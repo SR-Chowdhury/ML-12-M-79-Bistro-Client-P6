@@ -1,6 +1,6 @@
 # ML-12-Module-79 [Final Project Part 6]
 
-* 79
+* 79-2 Make Admin only link secure using AdminRoute
 
 
 ## react-boilerplate-2
