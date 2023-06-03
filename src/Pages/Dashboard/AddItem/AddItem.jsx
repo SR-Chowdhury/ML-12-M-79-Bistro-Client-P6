@@ -2,13 +2,19 @@ import React from 'react';
 import ReactHelmet from '../../../Components/ReactHelmet/ReactHelmet';
 import SectionTitle from '../../../Components/SectionTitle/SectionTitle';
 import { useForm } from 'react-hook-form';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../../Hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const img_hosting_token = import.meta.env.VITE_Image_Upload_Token;
 
 const AddItem = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
+    const {user} = useAuth();
+    const [axiosSecure] = useAxiosSecure();
 
     const onSubmit = data => {
         console.log(data);
@@ -25,7 +31,25 @@ const AddItem = () => {
                     const imgeURL = imageResponse.data.display_url;
                     const {name, recipe, category, price} = data;
                     const newItem = {name, recipe, image: imgeURL, category, price: parseFloat(price)};
-                    console.log(newItem);
+                    // console.log(newItem);
+                    
+                    axiosSecure.post('/menu', newItem)
+                    .then(data => {
+                        console.log('new item insterted', data);
+                        if (data.data.insertedId) {
+                            Swal.fire({
+                                title: 'New Menu item insterted successfully',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                },
+                                timer: 1500
+                            })
+                            reset();
+                        }
+                    })
                 }
             })
             .catch(err => console.log(err.message))
@@ -51,11 +75,11 @@ const AddItem = () => {
                             </label>
                             <select defaultValue={'Pick one'} {...register("category", { required: true })} className="select select-bordered w-full">
                                 <option disabled>Pick one</option>
-                                <option>Pizza</option>
-                                <option>Soup</option>
-                                <option>Salad</option>
-                                <option>Dessert</option>
-                                <option>Drinks</option>
+                                <option value={'pizza'}>Pizza</option>
+                                <option value={'soup'}>Soup</option>
+                                <option value={'salad'}>Salad</option>
+                                <option value={'dessert'}>Dessert</option>
+                                <option value={'drinks'}>Drinks</option>
                             </select>
                         </div>
                         <div className="form-control w-full">
