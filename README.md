@@ -1,6 +1,8 @@
 # ML-12-Module-79 [Final Project Part 6]
 
 * 79-2 Make Admin only link secure using AdminRoute
+* 79-3 Create Add item form using react hook form
+* 
 
 
 ## react-boilerplate-2
