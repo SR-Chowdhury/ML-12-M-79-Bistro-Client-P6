@@ -3,6 +3,7 @@
 * 79-2 Make Admin only link secure using AdminRoute
 * 79-3 Create Add item form using react hook form
 * 79-4 where to store images with pros and cons
+* 79-5 Upload Image to image Hosting server imgbb and get image url
 
 
 ## react-boilerplate-2
