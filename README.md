@@ -4,6 +4,7 @@
 * 79-3 Create Add item form using react hook form
 * 79-4 where to store images with pros and cons
 * 79-5 Upload Image to image Hosting server imgbb and get image url
+* 79-6 Get image url and create save new item api
 
 
 ## react-boilerplate-2
