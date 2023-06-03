@@ -7,6 +7,7 @@
 * 79-6 Get image url and create save new item api
 * 79-7 Save new item to the server and make api secure
 * 79-8 Create Manage items admin route and Load all menu items
+* 79-9 Delete Menu item with verifyAdmin middleware
 
 
 ## react-boilerplate-2

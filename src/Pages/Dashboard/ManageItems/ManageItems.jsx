@@ -2,14 +2,15 @@ import React from 'react';
 import ReactHelmet from '../../../Components/ReactHelmet/ReactHelmet';
 import SectionTitle from '../../../Components/SectionTitle/SectionTitle';
 import useMenu from '../../../Hooks/useMenu';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 
 const ManageItems = () => {
 
     const [menu, loading, refetch] = useMenu();
- 
+    const [axiosSecure] = useAxiosSecure();
+
     const handleDelete = (id) => {
-        console.log(id);
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -20,30 +21,27 @@ const ManageItems = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/menu/${id}`, {
-                    method: 'DELETE'
+
+                axiosSecure.delete(`/menu/${id}`)
+                .then(res => {
+                    // console.log('response delete ', res.data)
+                    if (res.data.deletedCount > 0) {
+                        refetch();
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
                 })
-                    .then(res => res.json())
-                    .then(data => {
-                        // if (data.deletedCount > 0) {
-                        //     refetch();
-                        //     Swal.fire(
-                        //         'Deleted!',
-                        //         'Your file has been deleted.',
-                        //         'success'
-                        //     )
-                        // }
-                        console.log(data);
-                    })
-                    .catch(err => console.log(err.message))
             }
         })
-
     }
+
     return (
         <div className='w-full'>
-            <ReactHelmet title={'Manage Items'}/>
-            <SectionTitle subHeading={'Hurry Up'} Heading={'Manage Items'}/>
+            <ReactHelmet title={'Manage Items'} />
+            <SectionTitle subHeading={'Hurry Up'} Heading={'Manage Items'} />
             <div className='bg-base-100 px-10'>
                 <div className="flex justify-between font-bold uppercase mb-5">
                     <h1>Total Items: ${menu.length}</h1>
