@@ -1,17 +1,15 @@
 import React from 'react';
 import ReactHelmet from '../../../Components/ReactHelmet/ReactHelmet';
-import useCart from '../../../Hooks/useCart';
 import SectionTitle from '../../../Components/SectionTitle/SectionTitle';
+import useMenu from '../../../Hooks/useMenu';
 import Swal from 'sweetalert2';
-import './MyCart.css';
 
-const MyCart = () => {
+const ManageItems = () => {
 
-    const [cart, refetch] = useCart();
-    const totalPrice = cart.reduce((sum, item) => item.price + sum, 0);
-
+    const [menu, loading, refetch] = useMenu();
+ 
     const handleDelete = (id) => {
-
+        console.log(id);
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -22,36 +20,33 @@ const MyCart = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/carts/${id}`, {
+                fetch(`http://localhost:5000/menu/${id}`, {
                     method: 'DELETE'
                 })
                     .then(res => res.json())
                     .then(data => {
-                        if (data.deletedCount > 0) {
-                            refetch();
-                            Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
-                                'success'
-                            )
-                        }
+                        // if (data.deletedCount > 0) {
+                        //     refetch();
+                        //     Swal.fire(
+                        //         'Deleted!',
+                        //         'Your file has been deleted.',
+                        //         'success'
+                        //     )
+                        // }
+                        console.log(data);
                     })
                     .catch(err => console.log(err.message))
             }
         })
 
-
     }
-
     return (
-        <div className='w-full px-10'>
-            <ReactHelmet title={'My Cart'} />
-            <SectionTitle subHeading={'Excelent'} Heading={'My Cart'} />
-            <div className='bg-base-100'>
+        <div className='w-full'>
+            <ReactHelmet title={'Manage Items'}/>
+            <SectionTitle subHeading={'Hurry Up'} Heading={'Manage Items'}/>
+            <div className='bg-base-100 px-10'>
                 <div className="flex justify-between font-bold uppercase mb-5">
-                    <h1>Total Booking: ${cart.length}</h1>
-                    <h1>Total Price: ${totalPrice}</h1>
-                    <button className="btn btn-warning btn-sm">Pay</button>
+                    <h1>Total Items: ${menu.length}</h1>
                 </div>
                 <div className=''>
                     <div className=" w-full">
@@ -68,7 +63,7 @@ const MyCart = () => {
 
                             <tbody>
                                 {
-                                    cart.map((item, index) =>
+                                    menu.map((item, index) =>
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>
@@ -81,7 +76,7 @@ const MyCart = () => {
                                             <td>{item.name}</td>
                                             <td>${item.price}</td>
                                             <th>
-                                                {/* <button className="btn btn-ghost btn-xs">Edit</button> */}
+                                                <button className="btn btn-ghost text-green-400 btn-xs">Edit</button>
                                                 <button onClick={() => handleDelete(item._id)} className="btn btn-ghost text-red-500 btn-xs">Delete</button>
                                             </th>
                                         </tr>
@@ -98,4 +93,4 @@ const MyCart = () => {
     );
 };
 
-export default MyCart;
+export default ManageItems;

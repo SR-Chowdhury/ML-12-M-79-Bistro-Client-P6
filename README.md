@@ -6,6 +6,7 @@
 * 79-5 Upload Image to image Hosting server imgbb and get image url
 * 79-6 Get image url and create save new item api
 * 79-7 Save new item to the server and make api secure
+* 79-8 Create Manage items admin route and Load all menu items
 
 
 ## react-boilerplate-2
